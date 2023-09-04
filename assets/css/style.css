@@ -1,9 +1,18 @@
 body {
-    text-align: center;
-    background: #fff;
+    background-color: black;
 }
-#my-canvas {
-    background: #fff;
-    margin-left: 10px;
-    margin-top: 10px;
+
+#grid {
+    height: 600px;
+    width: 300px;
+    border: 2px solid red;
+    /* background-color: black; */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#grid div {
+    /* border: 1px solid white; */
+    height: 30px;
+    width: 30px;
 }
