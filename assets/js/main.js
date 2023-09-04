@@ -7,9 +7,13 @@ function startAll() {
 
         for (let x = 1; x < 11; x++) {
 
-            grid.innerHTML += `<div class="square square-${x}-${y}"></div>`
+            grid.innerHTML += `<div class="square square-${x}-${y}"></div>`;
 
         }
+    }
+
+    for (let index = 0; index < 10; index++) {
+        grid.innerHTML += `<div class="square taken"></div>`
         
     }
 
@@ -60,7 +64,7 @@ function startAll() {
     let currentPosition = 4; // where to start a tetromino (x-axis)
     let currentRotation = 0;
 
-    // randomly select a Tetromino
+    // randomly selecting a Tetromino
     let random = Math.floor(Math.random()*allTetrominoes.length);
     let currentTetro = allTetrominoes[random][currentRotation]; // [type of tetramino][rotation]
 
@@ -70,6 +74,38 @@ function startAll() {
             squares[currentPosition + block].classList.add('tetromino');
         })
     };
-    draw();
+    
+    //undrawing function
+    function undraw() {
+        currentTetro.forEach(block => {
+            squares[currentPosition + block].classList.remove('tetromino');
+        });
+    }
+    // draw();
+
+    function moveDown() {
+        undraw();
+        currentPosition += width; //always moving one row under
+        
+        draw();
+        freeze();
+    }
+
+    function freeze() {
+        if (currentTetro.some(index => squares[currentPosition + index + width].classList.contains('taken') )) {
+
+            console.log('testeeee');
+            currentTetro.forEach(index => squares[currentPosition + index].classList.add('taken'));
+
+            // start new tetromino
+            random = Math.floor(Math.random() * allTetrominoes.length);
+            currentTetro = allTetrominoes[random][currentRotation];
+            currentPosition = 4;
+            draw();
+        }
+    }
+
+    // ---moving down the blocks every second
+    // timerId = setInterval(moveDown, 500);
 
 }
