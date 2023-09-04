@@ -61,12 +61,40 @@ function startAll() {
     const allTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino];
     
 
-    let currentPosition = 4; // where to start a tetromino (x-axis)
+    let currentPosition = 4; // where to start a tetromino (every block in the squares array has an index)
     let currentRotation = 0;
 
     // randomly selecting a Tetromino
     let random = Math.floor(Math.random()*allTetrominoes.length);
     let currentTetro = allTetrominoes[random][currentRotation]; // [type of tetramino][rotation]
+
+    // ---moving down the blocks every second
+    timerId = setInterval(moveDown, 1000);
+
+    //assigning controls
+    function control(e) {
+        if (e.keyCode === 37) {
+            moveLeft()
+        } else if (e.keyCode === 39) {
+            moveRight()
+        } else if (e.keyCode === 40) {
+            moveDown()
+        }else if (e.keyCode === 38) {
+            // rotate
+        }
+    };
+    document.addEventListener('keydown', control);
+
+
+
+    // --- FUNCTIONS ---
+    function moveDown() {
+        undraw();
+        currentPosition += width; //always moving one row under
+        
+        draw();
+        freeze();
+    }
 
     // drawing the tetromino
     function draw() {
@@ -81,16 +109,8 @@ function startAll() {
             squares[currentPosition + block].classList.remove('tetromino');
         });
     }
-    // draw();
 
-    function moveDown() {
-        undraw();
-        currentPosition += width; //always moving one row under
-        
-        draw();
-        freeze();
-    }
-
+    // freezing when touching the end or a taken block
     function freeze() {
         if (currentTetro.some(index => squares[currentPosition + index + width].classList.contains('taken') )) {
 
@@ -105,7 +125,34 @@ function startAll() {
         }
     }
 
-    // ---moving down the blocks every second
-    // timerId = setInterval(moveDown, 500);
+    // horizontal moves, unless it touches an edge or a taken block
+    function moveLeft() {
+        undraw();
+        const atLeftEdge = currentTetro.some(index => (currentPosition + index) % width === 0); // returns tru if is at the left edge
+
+        if (!atLeftEdge) {
+            currentPosition -=1   
+        };
+
+        if (currentTetro.some(index => squares[currentPosition + index].classList.contains('taken') )) {
+            currentPosition += 1
+        };
+
+        draw(); // redraw in new position
+    };
+    function moveRight() {
+        undraw();
+        const atRightEdge = currentTetro.some(index => (currentPosition + index) % width === width - 1); // returns tru if is at the Right edge
+
+        if (!atRightEdge) {
+            currentPosition += 1   
+        };
+
+        if (currentTetro.some(index => squares[currentPosition + index].classList.contains('taken') )) {
+            currentPosition -= 1
+        };
+
+        draw();
+    }
 
 }
