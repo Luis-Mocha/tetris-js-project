@@ -22,6 +22,10 @@ function startAll() {
     let squares = Array.from(document.querySelectorAll('.square'));
     // console.log(squares);
 
+    // creating blocks in preview display
+    for (let i = 0; i < 16; i++) {
+        preview.innerHTML += `<div></div>`        
+    }
 
     // defining all tetraminos
     const width = 10;
@@ -66,19 +70,22 @@ function startAll() {
     let currentPosition = 4; // where to start a tetromino (every block in the squares array has an index)
     let currentRotation = 0;
 
+    let nextRandom = 0;
     // randomly selecting a Tetromino
     let random = Math.floor(Math.random()*allTetrominoes.length);
     let currentTetro = allTetrominoes[random][currentRotation]; // [type of tetramino][rotation]
     console.log(random);
 
     // ---moving down the blocks every second
-    // timerId = setInterval(moveDown, 1000);
+    timerId = setInterval(moveDown, 1000);
     // controlling the tetromino
     document.addEventListener('keydown', control);
 
 
     // --- FUNCTIONS ---
     function moveDown() {
+        displayTetro(); // showing next tetromino
+
         undraw();
         currentPosition += width; //always moving one row under
         
@@ -107,10 +114,15 @@ function startAll() {
             currentTetro.forEach(index => squares[currentPosition + index].classList.add('taken'));
 
             // start new tetromino
-            random = Math.floor(Math.random() * allTetrominoes.length);
+            random = nextRandom;
+            nextRandom = Math.floor(Math.random() * allTetrominoes.length);
+            
             currentTetro = allTetrominoes[random][currentRotation];
             currentPosition = 4;
             draw();
+
+            // next-up tetromino
+            displayTetro();
         }
     }
 
@@ -192,5 +204,35 @@ function startAll() {
             rotate()
         }
     };
+
+
+    // -- UP-NEXT DISPLAY ---
+    const displaySquares = document.querySelectorAll('#preview-display div');
+    console.log(displaySquares);
+
+    const displayWidth = 4;
+    let displayIndex = 1;
+
+    //Tetrominos without rotations
+    const upNextTetrominoes = [
+        [1, displayWidth+1, displayWidth*2+1, 2], //lTetromino
+        [0, displayWidth, displayWidth+1, displayWidth*2+1], //zTetromino
+        [1, displayWidth, displayWidth+1, displayWidth+2], //tTetromino
+        [0, 1, displayWidth, displayWidth+1], //oTetromino
+        [1, displayWidth+1, displayWidth*2+1, displayWidth*3+1] //iTetromino
+    ];
+
+    function displayTetro() {
+        
+        // remove precedent tetromino
+        displaySquares.forEach(square => {
+            square.classList.remove('tetromino');
+        });
+
+        upNextTetrominoes[nextRandom].forEach(index => {
+            displaySquares[displayIndex + index].classList.add('tetromino');
+        })
+
+    }
 
 }
