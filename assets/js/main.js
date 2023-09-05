@@ -2,8 +2,9 @@ document.addEventListener('DOMContentLoaded', startAll());
 
 function startAll() {
     let grid = document.getElementById('grid');
-    let preview = document.getElementById('next-preview');
+    let preview = document.getElementById('preview-display');
 
+    // creating blocks in grid
     for (let y = 1; y < 21; y++) {
 
         for (let x = 1; x < 11; x++) {
@@ -12,14 +13,14 @@ function startAll() {
 
         }
     }
-
+    // blocks "under" the grid
     for (let index = 0; index < 10; index++) {
         grid.innerHTML += `<div class="square taken"></div>`
         
     }
 
     let squares = Array.from(document.querySelectorAll('.square'));
-    console.log(squares);
+    // console.log(squares);
 
 
     // defining all tetraminos
@@ -71,10 +72,9 @@ function startAll() {
     console.log(random);
 
     // ---moving down the blocks every second
-    timerId = setInterval(moveDown, 1000);
+    // timerId = setInterval(moveDown, 1000);
     // controlling the tetromino
     document.addEventListener('keydown', control);
-console.log(random, currentRotation);
 
 
     // --- FUNCTIONS ---
@@ -143,7 +143,27 @@ console.log(random, currentRotation);
 
         draw();
     }
+
     // function to rotate the tetromino
+    function checkRotatedPosition(P){ // function to fix rotation at edges
+
+        P = P || currentPosition //getting current position
+
+        // checking if is near left side
+        if ((P+1) % width < 4) { //add 1 because the position index can be 1 less than where the piece is (with how they are indexed)
+
+            if (currentTetro.some(index=> (currentPosition + index + 1) % width === 0) ){   //use actual position to check if it's flipped over to right side
+                currentPosition += 1    //if so, add one to wrap it back around
+                checkRotatedPosition(P) //check again (for long tetrominoes)
+            }
+        }
+        else if (P % width > 5) { // checking if is near right side
+            if (currentTetro.some(index=> (currentPosition + index) % width === 0)){
+                currentPosition -= 1
+                checkRotatedPosition(P)
+            }
+        }
+    };
     function rotate() {
         undraw();
 
@@ -154,6 +174,8 @@ console.log(random, currentRotation);
         };
         
         currentTetro = allTetrominoes[random][currentRotation];
+
+        checkRotatedPosition()
 
         draw();
     }
