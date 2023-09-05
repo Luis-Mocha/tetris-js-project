@@ -86,11 +86,13 @@ function startAll() {
     function moveDown() {
         displayTetro(); // showing next tetromino
 
-        undraw();
-        currentPosition += width; //always moving one row under
-        
-        draw();
-        freeze();
+        if(!currentTetro.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
+            undraw()
+            currentPosition += width
+            draw()
+        } else {
+            freeze();  
+        }
     }
 
     // drawing the tetromino
@@ -109,21 +111,20 @@ function startAll() {
 
     // freezing when touching the end or a taken block
     function freeze() {
-        if (currentTetro.some(index => squares[currentPosition + index + width].classList.contains('taken') )) {
 
-            currentTetro.forEach(index => squares[currentPosition + index].classList.add('taken'));
+        currentTetro.forEach(index => squares[currentPosition + index].classList.add('taken'));
 
-            // start new tetromino
-            random = nextRandom;
-            nextRandom = Math.floor(Math.random() * allTetrominoes.length);
-            
-            currentTetro = allTetrominoes[random][currentRotation];
-            currentPosition = 4;
-            draw();
+        // start new tetromino
+        random = nextRandom;
+        nextRandom = Math.floor(Math.random() * allTetrominoes.length);
+        
+        currentTetro = allTetrominoes[random][currentRotation];
+        currentPosition = 4;
+        draw();
 
-            // next-up tetromino
-            displayTetro();
-        }
+        // next-up tetromino
+        displayTetro();
+        
     }
 
     // horizontal moves, unless it touches an edge or a taken block
@@ -234,5 +235,7 @@ function startAll() {
         })
 
     }
+
+    // --- START / PAUSE BUTTON ---
 
 }
