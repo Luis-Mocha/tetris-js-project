@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', startAll());
 
 function startAll() {
     let grid = document.getElementById('grid');
+    let preview = document.getElementById('next-preview');
 
     for (let y = 1; y < 21; y++) {
 
@@ -67,24 +68,13 @@ function startAll() {
     // randomly selecting a Tetromino
     let random = Math.floor(Math.random()*allTetrominoes.length);
     let currentTetro = allTetrominoes[random][currentRotation]; // [type of tetramino][rotation]
+    console.log(random);
 
     // ---moving down the blocks every second
     timerId = setInterval(moveDown, 1000);
-
-    //assigning controls
-    function control(e) {
-        if (e.keyCode === 37) {
-            moveLeft()
-        } else if (e.keyCode === 39) {
-            moveRight()
-        } else if (e.keyCode === 40) {
-            moveDown()
-        }else if (e.keyCode === 38) {
-            // rotate
-        }
-    };
+    // controlling the tetromino
     document.addEventListener('keydown', control);
-
+console.log(random, currentRotation);
 
 
     // --- FUNCTIONS ---
@@ -114,7 +104,6 @@ function startAll() {
     function freeze() {
         if (currentTetro.some(index => squares[currentPosition + index + width].classList.contains('taken') )) {
 
-            console.log('testeeee');
             currentTetro.forEach(index => squares[currentPosition + index].classList.add('taken'));
 
             // start new tetromino
@@ -154,5 +143,32 @@ function startAll() {
 
         draw();
     }
+    // function to rotate the tetromino
+    function rotate() {
+        undraw();
+
+        currentRotation++;
+
+        if (currentRotation === currentTetro.length) {
+            currentRotation = 0
+        };
+        
+        currentTetro = allTetrominoes[random][currentRotation];
+
+        draw();
+    }
+
+    //assigning controls
+    function control(e) {
+        if (e.keyCode === 37) {
+            moveLeft()
+        } else if (e.keyCode === 39) {
+            moveRight()
+        } else if (e.keyCode === 40) {
+            moveDown()
+        }else if (e.keyCode === 38) {
+            rotate()
+        }
+    };
 
 }
