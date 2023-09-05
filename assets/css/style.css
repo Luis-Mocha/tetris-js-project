@@ -8,10 +8,17 @@ body {
     background-color: black;
 }
 
+#container {
+    display: flex;
+    justify-content: space-evenly;
+
+    margin-top: 30px;
+}
+
 #grid {
     height: 600px;
     width: 300px;
-    border: 2px solid red;
+    border: 2px solid white;
     /* background-color: black; */
     display: flex;
     flex-wrap: wrap;
@@ -28,3 +35,21 @@ body {
     background-color: red;
     border: 1px solid white
 }
+
+/* preview display */
+#preview-display {
+    border: 1px solid red;
+    width: 180px;
+    height: 180px;
+
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+#preview-display div {
+    /* border: 1px solid white; */
+    width: calc(100%  / 4);
+    height: calc(100%  / 4);
+}
+
