@@ -5,6 +5,7 @@ function startAll() {
     let preview = document.getElementById('preview-display');
     let scoreDisplay = document.getElementById('score');
     let score = 0;
+    let pointsMade = 0;
     let timerId;
 
     // creating blocks in grid
@@ -126,13 +127,14 @@ function startAll() {
         
         currentTetro = allTetrominoes[random][currentRotation];
         currentPosition = 4;
+
+        //update score
+        addScore();
+        
         draw();
 
         // next-up tetromino
-        displayTetro();
-
-        //update score
-        addScore();        
+        displayTetro();       
     }
 
     // horizontal moves, unless it touches an edge or a taken block
@@ -269,8 +271,8 @@ function startAll() {
 
             if (row.every(index => squares[index].classList.contains('taken') )) {  //I check if every square in pur defined row contains a div with class taken
                 
-                score += 10
-                scoreDisplay.innerHTML = score
+
+                pointsMade += 10;
 
                 row.forEach(index => {
                     squares[index].classList.remove('taken');
@@ -285,6 +287,15 @@ function startAll() {
             }
             
         }
+
+        if (pointsMade % 40 === 0) {
+            score += (pointsMade / 40) * 100;
+        } else {
+            score += pointsMade;
+        }
+
+        scoreDisplay.innerHTML = score;
+        pointsMade = 0;
     }
 
 

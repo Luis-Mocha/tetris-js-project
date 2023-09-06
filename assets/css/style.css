@@ -36,6 +36,9 @@ body {
     border: 1px solid white
 }
 
+
+/* --- RIGHT SIDE --- */
+
 /* preview display */
 #preview-display {
     border: 1px solid red;
@@ -53,3 +56,16 @@ body {
     height: calc(100%  / 4);
 }
 
+/* start button */
+#start-btn {
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+/* Score section */
+#score-section {
+    color: white;
+    margin-top: 20px;
+    padding: 5px;
+    border: 1px solid yellow;
+}
