@@ -4,6 +4,7 @@ function startAll() {
     let grid = document.getElementById('grid');
     let preview = document.getElementById('preview-display');
     let scoreDisplay = document.getElementById('score');
+    let restartBtn = document.getElementById('restart-btn');
     let score = 0;
     let pointsMade = 0;
     let timerId;
@@ -130,11 +131,13 @@ function startAll() {
 
         //update score
         addScore();
-        
+
         draw();
 
         // next-up tetromino
-        displayTetro();       
+        displayTetro();
+        
+        gameOver();
     }
 
     // horizontal moves, unless it touches an edge or a taken block
@@ -213,6 +216,8 @@ function startAll() {
             moveDown()
         }else if (e.keyCode === 38) {
             rotate()
+        } else if (e.keyCode === 80) {
+            playPauseFunction()
         }
     };
 
@@ -294,9 +299,28 @@ function startAll() {
             score += pointsMade;
         }
 
-        scoreDisplay.innerHTML = score;
+        scoreDisplay.innerHTML = `Score: ${score}`;
         pointsMade = 0;
     }
 
+    // --- GAME OVER ---
+    function gameOver() {
+        if (currentTetro.some(index => squares[currentPosition + index].classList.contains('taken') )) {
+            
+            scoreDisplay.innerHTML = `GAME OVER - Final score: ${score}`;
+            clearInterval(timerId);
 
+            startBtn.classList.add('display-none');
+            restartBtn.classList.remove('display-none');
+        }
+    };
+
+    
+
+}
+
+// reloading page
+function restart() {
+    console.log('helloooo');
+    location.reload();
 }
