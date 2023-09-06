@@ -65,6 +65,8 @@ function startAll() {
     ];
 
     const allTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino];
+
+    let timerId;
     
 
     let currentPosition = 4; // where to start a tetromino (every block in the squares array has an index)
@@ -74,10 +76,13 @@ function startAll() {
     // randomly selecting a Tetromino
     let random = Math.floor(Math.random()*allTetrominoes.length);
     let currentTetro = allTetrominoes[random][currentRotation]; // [type of tetramino][rotation]
-    console.log(random);
+    // console.log(random);
 
-    // ---moving down the blocks every second
-    timerId = setInterval(moveDown, 1000);
+    
+    // --- START / PAUSE BUTTON ---
+    startBtn = document.getElementById('start-btn');
+    startBtn.addEventListener('click', playPauseFunction);
+
     // controlling the tetromino
     document.addEventListener('keydown', control);
 
@@ -206,6 +211,22 @@ function startAll() {
         }
     };
 
+    // function to start or pause the game
+    function playPauseFunction() {
+        if (timerId) {
+            clearInterval(timerId)
+            timerId = null
+
+            startBtn.innerHTML= 'Play';
+        } else {
+            startBtn.innerHTML= 'Pause';
+            draw();
+            timerId = setInterval(moveDown, 1000);
+            nextRandom = Math.floor(Math.random()*allTetrominoes.length );
+            displayTetro();
+        }
+    };
+
 
     // -- UP-NEXT DISPLAY ---
     const displaySquares = document.querySelectorAll('#preview-display div');
@@ -236,6 +257,5 @@ function startAll() {
 
     }
 
-    // --- START / PAUSE BUTTON ---
 
 }
