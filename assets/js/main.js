@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', startAll());
 function startAll() {
     let grid = document.getElementById('grid');
     let preview = document.getElementById('preview-display');
+    let scoreDisplay = document.getElementById('score');
+    let score = 0;
+    let timerId;
 
     // creating blocks in grid
     for (let y = 1; y < 21; y++) {
@@ -20,7 +23,7 @@ function startAll() {
     }
 
     let squares = Array.from(document.querySelectorAll('.square'));
-    // console.log(squares);
+    console.log(squares);
 
     // creating blocks in preview display
     for (let i = 0; i < 16; i++) {
@@ -65,8 +68,6 @@ function startAll() {
     ];
 
     const allTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino];
-
-    let timerId;
     
 
     let currentPosition = 4; // where to start a tetromino (every block in the squares array has an index)
@@ -129,7 +130,9 @@ function startAll() {
 
         // next-up tetromino
         displayTetro();
-        
+
+        //update score
+        addScore();        
     }
 
     // horizontal moves, unless it touches an edge or a taken block
@@ -215,7 +218,7 @@ function startAll() {
     function playPauseFunction() {
         if (timerId) {
             startBtn.innerHTML= `<i class="fa-solid fa-circle-play"></i> Play`;
-            
+
             clearInterval(timerId)
             timerId = null
 
@@ -230,7 +233,7 @@ function startAll() {
     };
 
 
-    // -- UP-NEXT DISPLAY ---
+    // --- UP-NEXT DISPLAY ---
     const displaySquares = document.querySelectorAll('#preview-display div');
     console.log(displaySquares);
 
@@ -257,6 +260,31 @@ function startAll() {
             displaySquares[displayIndex + index].classList.add('tetromino');
         })
 
+    }
+
+    // --- SCORE ---
+    function addScore() {
+        for (let i = 0; i < 199; i += width) { // cheking every row
+            const row = [i, i+1, i+2, i+3, i+4, i+5,i+6,i+7, i+8, i+9];
+
+            if (row.every(index => squares[index].classList.contains('taken') )) {  //I check if every square in pur defined row contains a div with class taken
+                
+                score += 10
+                scoreDisplay.innerHTML = score
+
+                row.forEach(index => {
+                    squares[index].classList.remove('taken');
+                    squares[index].classList.remove('tetromino');
+                });       
+                
+                // splice the completed row and append it on again on top
+                const squaresRemoved = squares.splice(i, width);
+                squares = squaresRemoved.concat(squares);
+                squares.forEach(block => grid.appendChild(block));
+
+            }
+            
+        }
     }
 
 
