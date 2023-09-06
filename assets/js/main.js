@@ -214,12 +214,14 @@ function startAll() {
     // function to start or pause the game
     function playPauseFunction() {
         if (timerId) {
+            startBtn.innerHTML= `<i class="fa-solid fa-circle-play"></i> Play`;
+            
             clearInterval(timerId)
             timerId = null
 
-            startBtn.innerHTML= 'Play';
+            
         } else {
-            startBtn.innerHTML= 'Pause';
+            startBtn.innerHTML= `<i class="fa-solid fa-circle-pause"></i> Pause`;
             draw();
             timerId = setInterval(moveDown, 1000);
             nextRandom = Math.floor(Math.random()*allTetrominoes.length );
