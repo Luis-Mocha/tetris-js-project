@@ -19,13 +19,19 @@
         <div id="right-side">
             <div id="preview-display"></div>
 
-            <button id="start-btn">
-                Start
-            </button>
+            <div id="btn-section">
+                <button id="start-btn" class="btn">
+                    Start
+                </button>
+
+                <button id="restart-btn" class="btn display-none" onclick="restart()">
+                    Restart
+                </button>
+            </div>
+            
 
             <div id="score-section">
-                <span>Score:</span>
-                <span id="score">0</span>
+                <span id="score">Score</span>
             </div>
             
         </div>
