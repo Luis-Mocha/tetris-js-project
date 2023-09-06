@@ -34,18 +34,34 @@ function startAll() {
 
     // defining all tetraminos
     const width = 10;
-    const lTetromino = [
+    const jTetromino = [
         [1, width+1, width*2+1, 2],
         [width, width+1, width+2, width*2+2],
         [1, width+1, width*2+1, width*2],
         [width, width*2, width*2+1, width*2+2]
     ];
 
+    const lTetromino = [
+        [0, 1, width + 1, width*2+1],
+        [2, width, width + 1, width + 2],
+        [0, width, width*2, width*2+1],
+        [0, 1, 2, width]
+    ];
+
     const zTetromino = [
         [0,width,width+1,width*2+1],
-        [width+1, width+2,width*2,width*2+1],
+        // [width+1, width+2,width*2,width*2+1],
+        [1,2,width,width+1],
         [0,width,width+1,width*2+1],
-        [width+1, width+2,width*2,width*2+1]
+        [1,2,width,width+1],
+
+    ];
+
+    const sTetromino = [
+        [0, 1, width + 1, width + 2],
+        [1, width, width + 1, width * 2],
+        [0, 1, width + 1, width + 2],
+        [1, width, width + 1, width * 2],
     ];
 
     const tTetromino = [
@@ -69,7 +85,8 @@ function startAll() {
         [width,width+1,width+2,width+3]
     ];
 
-    const allTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino];
+    const allTetrominoes = [jTetromino, lTetromino, zTetromino, sTetromino, tTetromino, oTetromino, iTetromino ];
+    const colors = ['blu', 'orange', 'red', 'green', 'violet', 'yellow', 'aqua', ]; // respective colors
     
 
     let currentPosition = 4; // where to start a tetromino (every block in the squares array has an index)
@@ -83,7 +100,7 @@ function startAll() {
 
     
     // --- START / PAUSE BUTTON ---
-    startBtn = document.getElementById('start-btn');
+    let startBtn = document.getElementById('start-btn');
     startBtn.addEventListener('click', playPauseFunction);
 
     // controlling the tetromino
@@ -107,6 +124,8 @@ function startAll() {
     function draw() {
         currentTetro.forEach(block => {
             squares[currentPosition + block].classList.add('tetromino');
+
+            squares[currentPosition + block].style.backgroundColor = colors[random]; // adding colors
         })
     };
     
@@ -114,6 +133,8 @@ function startAll() {
     function undraw() {
         currentTetro.forEach(block => {
             squares[currentPosition + block].classList.remove('tetromino');
+
+            squares[currentPosition + block].style.backgroundColor = ''; // removing colors
         });
     }
 
@@ -242,15 +263,17 @@ function startAll() {
 
     // --- UP-NEXT DISPLAY ---
     const displaySquares = document.querySelectorAll('#preview-display div');
-    console.log(displaySquares);
+    // console.log(displaySquares);
 
     const displayWidth = 4;
     let displayIndex = 1;
 
     //Tetrominos without rotations
     const upNextTetrominoes = [
-        [1, displayWidth+1, displayWidth*2+1, 2], //lTetromino
+        [1, 2, displayWidth+1, displayWidth*2+1], //jTetromino
+        [0, 1, displayWidth+1, displayWidth*2+1], // lTetromino
         [0, displayWidth, displayWidth+1, displayWidth*2+1], //zTetromino
+        [1, displayWidth, displayWidth + 1, displayWidth*2], //sTetromino
         [1, displayWidth, displayWidth+1, displayWidth+2], //tTetromino
         [0, 1, displayWidth, displayWidth+1], //oTetromino
         [1, displayWidth+1, displayWidth*2+1, displayWidth*3+1] //iTetromino
@@ -261,10 +284,12 @@ function startAll() {
         // remove precedent tetromino
         displaySquares.forEach(square => {
             square.classList.remove('tetromino');
+            square.style.backgroundColor = ''; // removing colors
         });
 
         upNextTetrominoes[nextRandom].forEach(index => {
             displaySquares[displayIndex + index].classList.add('tetromino');
+            displaySquares[displayIndex + index].style.backgroundColor = colors[nextRandom]; // adding colors
         })
 
     }
@@ -282,6 +307,8 @@ function startAll() {
                 row.forEach(index => {
                     squares[index].classList.remove('taken');
                     squares[index].classList.remove('tetromino');
+
+                    squares[index].style.backgroundColor = '';
                 });       
                 
                 // splice the completed row and append it on again on top
