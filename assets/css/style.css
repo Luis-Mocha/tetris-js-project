@@ -56,11 +56,18 @@ body {
     height: calc(100%  / 4);
 }
 
-/* start button */
-#start-btn {
+/* Buttons */
+.btn {
     margin-top: 20px;
     cursor: pointer;
+    padding: 5px 10px;
 }
+
+.display-none {
+    display: none;
+}
+
+
 
 /* Score section */
 #score-section {
