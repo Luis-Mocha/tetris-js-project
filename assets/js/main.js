@@ -8,7 +8,7 @@ function startAll() {
     let score = 0;
     let pointsMade = 0;
     let timerId;
-
+    let gameOverCheck = false;
     // creating blocks in grid
     for (let y = 1; y < 21; y++) {
 
@@ -105,8 +105,7 @@ function startAll() {
 
     // controlling the tetromino
     document.addEventListener('keydown', control);
-
-
+    
     // --- FUNCTIONS ---
     function moveDown() {
         displayTetro(); // showing next tetromino
@@ -228,17 +227,19 @@ function startAll() {
     }
 
     //assigning controls
-    function control(e) {
-        if (e.keyCode === 37) {
-            moveLeft()
-        } else if (e.keyCode === 39) {
-            moveRight()
-        } else if (e.keyCode === 40) {
-            moveDown()
-        }else if (e.keyCode === 38) {
-            rotate()
-        } else if (e.keyCode === 80) {
-            playPauseFunction()
+    function control(event) {
+        if (!gameOverCheck) {
+            if (event.keyCode === 37) {
+                moveLeft()
+            } else if (event.keyCode === 39) {
+                moveRight()
+            } else if (event.keyCode === 40) {
+                moveDown()
+            }else if (event.keyCode === 38) {
+                rotate()
+            } else if (event.keyCode === 80) {
+                playPauseFunction()
+            }   
         }
     };
 
@@ -336,6 +337,9 @@ function startAll() {
             
             scoreDisplay.innerHTML = `GAME OVER - Final score: ${score}`;
             clearInterval(timerId);
+
+            gameOverCheck = true;
+            console.log(gameOverCheck);
 
             startBtn.classList.add('display-none');
             restartBtn.classList.remove('display-none');
