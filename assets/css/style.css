@@ -7,6 +7,7 @@
 
 body {
     background-color: black;
+    color: white;
 }
 
 /* --- Title --- */
@@ -14,12 +15,15 @@ h1 {
     letter-spacing: 9px;
     text-align: center;
     font-size: 100px;
-    margin-bottom: 20px;
+    /* margin-bottom: 10px; */
+    line-height: 1;
 }
 .title-word {
     animation: color-animation 8s linear infinite;
     margin-right:0px;
     padding: 0;
+    line-height: 0;
+    vertical-align: super;
 } 
 .title-word-1 {
     --color-1: #FF0000; /* Rosso */
@@ -108,12 +112,32 @@ h1 {
     display: none;
 }
 
-
-
 /* Score section */
 #score-section {
     color: white;
     margin-top: 20px;
     padding: 5px;
     border: 1px solid yellow;
+}
+
+/* controls */
+#control-section {
+    margin-top: 20px;
+}
+.control-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+.control-row>span {
+    margin-left: 10px;
+}
+
+.control-key {
+    width: 40px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px ridge white;
 }
